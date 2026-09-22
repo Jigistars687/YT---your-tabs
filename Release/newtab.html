@@ -1,0 +1,1046 @@
+<!doctype html>
+<html lang="en" class="yft-loading">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style id="yft-boot-style">
+      html.yft-loading,
+      html.yft-loading body {
+        background: #0c0d14 !important;
+      }
+      html.yft-loading body {
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+      html.yft-ready body {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.22s ease-out;
+      }
+    </style>
+    <title>YT - Your Tabs</title>
+    <meta name="description" content="Customizable Firefox New Tab with bilingual support, dynamic neon borders, AI search, true glassmorphism, and ultra-optimization mode." />
+    <meta property="og:title" content="YT - Your Tabs" />
+    <meta property="og:description" content="Customizable Firefox New Tab with bilingual support, dynamic neon borders, AI search, true glassmorphism, and ultra-optimization mode." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="./style.css" />
+    <style id="user-custom-css"></style>
+  </head>
+  <body>
+    <div class="background-container">
+      <video id="bg-video" autoplay loop muted playsinline class="hidden"></video>
+      <img id="bg-image" class="hidden" alt="Wallpaper" />
+      <div id="bg-color"></div>
+      <div id="video-overlay" class="overlay"></div>
+    </div>
+
+
+    <div id="user-widgets-container"></div>
+
+   
+    <div id="build-grid"></div>
+    <div id="build-mode-indicator" class="hidden">
+      <span data-i18n="buildModeIndicator">Конструктор: перетаскивайте элементы мышью</span>
+      <button id="exit-build-mode" data-i18n="btnExitBuild">Завершить</button>
+    </div>
+
+
+
+    <div id="widget-greeting" class="draggable-widget custom-widget">
+      <span id="greeting-text"></span>
+    </div>
+
+
+    <div id="widget-clock" class="draggable-widget">
+      <div id="clock" class="clock">00:00:00</div>
+    </div>
+
+
+    <div id="widget-weather" class="draggable-widget custom-widget hidden">
+      <div id="weather-info">--°C</div>
+    </div>
+
+
+    <div id="widget-ip" class="draggable-widget custom-widget hidden">
+      <div id="ip-info">IP...</div>
+    </div>
+
+    <div id="widget-search" class="draggable-widget">
+      <form id="search-form" autocomplete="off">
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="Поиск в интернете..." 
+          data-i18n-placeholder="defaultSearchPlaceholder"
+          spellcheck="false" 
+        />
+        
+        <div id="search-addons" class="search-addons">
+          <button type="button" id="btn-search-voice" class="search-addon-btn" title="Голосовой ввод" data-i18n-title="titleVoice">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="23"/>
+              <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+          </button>
+          <button type="button" id="btn-search-image" class="search-addon-btn" title="Поиск по фото (Google Lens)" data-i18n-title="titleImageSearch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+          </button>
+          <button type="button" id="btn-search-ai" class="search-addon-btn" title="Режим Google AI (udm=50)" data-i18n-title="titleAiMode">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+              <path d="M5 3v4"/>
+              <path d="M19 17v4"/>
+              <path d="M3 5h4"/>
+              <path d="M17 19h4"/>
+            </svg>
+          </button>
+        </div>
+
+        <button type="submit" id="search-btn">
+          <span class="btn-text" data-i18n="btnSearch">Найти</span>
+          <svg class="btn-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+
+    <div id="widget-shortcuts" class="draggable-widget">
+      <div id="shortcuts-grid" class="shortcuts-grid"></div>
+    </div>
+
+
+    <button id="settings-toggle" class="btn-settings-trigger" title="Настройки" data-i18n-title="titleSettings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    </button>
+
+
+    <div id="builder-controls" class="draggable-widget custom-widget hidden" style="position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 1000; flex-direction: column; gap: 8px; min-width: 320px; background: rgba(18, 18, 24, 0.95);">
+      <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+        <strong id="builder-target-name" style="font-size: 0.9rem;" data-i18n="builderTargetDefault">Выбранный элемент</strong>
+        <button id="build-reset-el" class="btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;" data-i18n="btnResetTransform">Сбросить трансформацию</button>
+      </div>
+      <div style="display: flex; gap: 15px; width: 100%;">
+        <div style="flex: 1;">
+          <label style="font-size: 0.75rem;"><span data-i18n="lbl_indivScale">Индивидуальный масштаб:</span> <span id="val-build-scale">1</span></label>
+          <input type="range" id="build-scale" min="0.4" max="2.5" step="0.05" value="1" />
+        </div>
+        <div style="flex: 1;">
+          <label style="font-size: 0.75rem;"><span data-i18n="lbl_indivRotate">Индивидуальный поворот:</span> <span id="val-build-rotate">0</span>°</label>
+          <input type="range" id="build-rotate" min="-180" max="180" step="5" value="0" />
+        </div>
+      </div>
+    </div>
+
+
+    <aside id="settings-sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h2 data-i18n="settingsTitle">Настройки</h2>
+        <button id="close-settings" class="btn-close" title="Закрыть">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="settings-section-picker">
+        <label for="settings-section-select" data-i18n="lbl_settingsSection">Раздел настроек</label>
+        <select id="settings-section-select">
+          <option value="tab-bg" data-i18n="tabBg">Фон</option>
+          <option value="tab-clock" data-i18n="tabClock">Часы</option>
+          <option value="tab-search" data-i18n="tabSearch">Поиск</option>
+          <option value="tab-shortcuts" data-i18n="tabShortcuts">Ярлыки</option>
+          <option value="tab-widgets" data-i18n="tabWidgets">Виджеты</option>
+          <option value="tab-system" data-i18n="tabSystem">Система</option>
+        </select>
+      </div>
+
+      <div class="sidebar-body">
+        <div id="tab-bg" class="tab-content active">
+          <!-- Управление темами -->
+          <div class="setting-group">
+            <h5 data-i18n="h_themes">Управление Темами</h5>
+            <div class="setting-item">
+              <label data-i18n="lbl_themeSwitching">Смена тем на новых вкладках:</label>
+              <select id="theme-mode-select">
+                <option value="fixed" data-i18n="opt_fixed">Зафиксировать текущую</option>
+                <option value="random" data-i18n="opt_random">Случайная</option>
+                <option value="sequential" data-i18n="opt_sequential">По порядку</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <div class="theme-selector-bar">
+                <select id="theme-list-select"></select>
+                <button id="add-theme-btn" class="btn-secondary" data-i18n="btnNewTheme">Новая</button>
+                <button id="delete-theme-btn" class="btn-danger" data-i18n="btnDeleteTheme">Удалить</button>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="setting-group">
+            <h5 data-i18n="h_bgType">Тип подложки</h5>
+            <div class="radio-group">
+              <label><input type="radio" name="bg-type" id="bg-type-color" value="color" checked><span data-i18n="bg-type-color">Цвета</span></label>
+              <label><input type="radio" name="bg-type" id="bg-type-image" value="image"><span data-i18n="bg-type-image">Фото</span></label>
+              <label><input type="radio" name="bg-type" id="bg-type-video" value="video"><span data-i18n="bg-type-video">Видео</span></label>
+            </div>
+
+            <div id="bg-color-block">
+              <hr class="divider" />
+              <label class="checkbox-label">
+                <input type="checkbox" id="bg-use-gradient" checked />
+                <span data-i18n="bg-use-gradient">Использовать градиент</span>
+              </label>
+
+              <div id="gradient-extra">
+                <div class="setting-item" style="margin-top: 8px;">
+                  <label data-i18n="lbl_colorCount">Количество цветов:</label>
+                  <select id="bg-colors-count">
+                    <option value="2" data-i18n="opt_colors2">2 Цвета</option>
+                    <option value="3" data-i18n="opt_colors3">3 Цвета</option>
+                    <option value="4" selected data-i18n="opt_colors4">4 Цвета</option>
+                    <option value="5" data-i18n="opt_colors5">5 Цветов</option>
+                  </select>
+                </div>
+                <div class="setting-item" style="margin-top: 8px;">
+                  <label><span data-i18n="lbl_angle">Угол наклона:</span> <span id="val-bg-angle">135</span>°</label>
+                  <input type="range" id="bg-angle" min="0" max="360" value="135" />
+                </div>
+                <div id="gradient-colors-wrapper"></div>
+              </div>
+            </div>
+
+            <div id="media-source-block" class="hidden">
+              <hr class="divider" />
+              <div class="radio-group">
+                <label><input type="radio" name="media-source" id="media-source-preset" value="preset" checked><span data-i18n="media-source-preset">Пресеты</span></label>
+                <label><input type="radio" name="media-source" id="media-source-local" value="local"><span data-i18n="media-source-local">Файл с ПК</span></label>
+                <label><input type="radio" name="media-source" id="media-source-url" value="url"><span data-i18n="media-source-url">URL</span></label>
+              </div>
+              <div id="media-preset-block" class="setting-item" style="margin-top: 8px;">
+                <div id="wallpaper-presets-list" class="wallpaper-presets-grid"></div>
+              </div>
+              <div id="media-url-block" class="setting-item hidden" style="margin-top: 8px;">
+                <input type="url" id="media-url-input" placeholder="https://..." />
+              </div>
+              <div id="media-file-block" class="setting-item hidden" style="margin-top: 8px;">
+                <label for="media-file-input" class="custom-file-upload" id="label-media-file">
+                  <input type="file" id="media-file-input" accept="video/*,image/*" />
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="file-name-display" data-i18n="fileNamePlaceholder">Выбрать файл или перетащить...</span>
+                </label>
+              </div>
+              <div id="video-speed-block" class="setting-item hidden" style="margin-top: 8px;">
+                <label><span data-i18n="lbl_videoSpeed">Скорость воспроизведения:</span> <span id="val-speed">1</span>x</label>
+                <input type="range" id="video-speed" min="0.25" max="3" step="0.25" value="1" />
+              </div>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <h5 data-i18n="h_bgFilters">Фильтры обоев</h5>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_brightness">Яркость:</span> <span id="val-brightness">100</span>%</label>
+              <input type="range" id="media-brightness" min="10" max="150" value="100" />
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_overlay">Затемнение (Overlay):</span> <span id="val-overlay">0</span>%</label>
+              <input type="range" id="media-overlay" min="0" max="90" value="0" />
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_bgBlur">Размытие фона:</span> <span id="val-blur">0</span>px</label>
+              <input type="range" id="media-blur" min="0" max="30" value="0" />
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-clock" class="tab-content">
+          <div class="setting-group">
+            <h5 data-i18n="h_designFont">Дизайн и Шрифт</h5>
+            <label class="checkbox-label">
+              <input type="checkbox" id="clock-enable" checked />
+              <span data-i18n="clock-enable">Отображать часы</span>
+            </label>
+            <div class="setting-item">
+              <label data-i18n="lbl_font">Шрифт:</label>
+              <select id="clock-font-select">
+                <option value="system-ui, sans-serif" data-i18n="opt_fontSystem">Системный (Классика)</option>
+                <option value="'Impact', sans-serif" data-i18n="opt_fontImpact">Impact (Массивный)</option>
+                <option value="'Courier New', monospace" data-i18n="opt_fontMono">Monospace (Машинка)</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_fontSize">Размер шрифта:</span> <span id="val-size-clock">5</span>rem</label>
+              <input type="range" id="size-clock" min="2" max="10" step="0.2" value="5" />
+            </div>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_digitColor">Цвет цифр:</label>
+              <div class="custom-color-control" data-color-id="clockColor">
+                <div class="color-swatch-preview" style="background:#ffffff;"></div>
+                <span class="color-hex-label">#ffffff</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="setting-group system-section" id="sys-appearance">
+            <h5 data-i18n="h_effects">Эффекты</h5>
+            <label class="checkbox-label">
+              <input type="checkbox" id="clock-3d" />
+              <span data-i18n="clock-3d">True Glassmorphism (3D Стекло с рефракцией)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="clock-neon" />
+              <span data-i18n="clock-neon">Эффект Неона (Свечение)</span>
+            </label>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_customNeonColor">Собственный цвет Неона:</label>
+              <div class="custom-color-control" data-color-id="clockNeonColor">
+                <div class="color-swatch-preview" style="background:#00f3ff;"></div>
+                <span class="color-hex-label">#00f3ff</span>
+              </div>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="clock-shadows" checked />
+              <span data-i18n="clock-shadows">Тень текста</span>
+            </label>
+          </div>
+
+          <div class="setting-group">
+            <h5 data-i18n="h_timeFormat">Формат времени</h5>
+            <label class="checkbox-label">
+              <input type="checkbox" id="clock-24h" checked />
+              <span data-i18n="clock-24h">24-часовой формат</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="clock-seconds" checked />
+              <span data-i18n="clock-seconds">Отображать секунды</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="tab-search" class="tab-content">
+          <div class="setting-group system-section" id="sys-interface">
+            <h5 data-i18n="h_panelInterface">Интерфейс панели</h5>
+            <label class="checkbox-label">
+              <input type="checkbox" id="search-enable" checked />
+              <span data-i18n="search-enable">Отображать поиск</span>
+            </label>
+            <div class="setting-item">
+              <label data-i18n="lbl_searchEngine">Поисковый движок:</label>
+              <select id="search-engine-select">
+                <option value="google">Google</option>
+                <option value="yandex" data-i18n="opt_yandex">Яндекс</option>
+                <option value="duckduckgo">DuckDuckGo</option>
+                <option value="bing">Bing</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label data-i18n="lbl_placeholderText">Текст подсказки:</label>
+              <input type="text" id="search-placeholder-input" />
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_barScale">Масштаб строки:</span> <span id="val-size-search">1</span>x</label>
+              <input type="range" id="size-search" min="0.7" max="1.5" step="0.05" value="1" />
+            </div>
+            <div class="setting-item">
+              <label data-i18n="lbl_confirmBtn">Кнопка подтверждения:</label>
+              <select id="search-btn-style">
+                <option value="text" data-i18n="opt_btnText">Текст («Найти»)</option>
+                <option value="icon" data-i18n="opt_btnIcon">SVG-иконка лупы</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label data-i18n="lbl_loupeDirection">Направление ручки лупы:</label>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <select id="search-loupe-direction" style="flex: 1;">
+                  <option value="bottom-right" data-i18n="opt_loupeBottomRight">Вправо-вниз (↘ По умолчанию)</option>
+                  <option value="bottom-left" data-i18n="opt_loupeBottomLeft">Влево-вниз (↙ Отразить зеркально)</option>
+                  <option value="top-left" data-i18n="opt_loupeTopLeft">Влево-вверх (↖)</option>
+                  <option value="top-right" data-i18n="opt_loupeTopRight">Вправо-вверх (↗)</option>
+                </select>
+                <button type="button" id="btn-flip-loupe" class="btn-secondary" title="Быстро отразить / повернуть лупу" style="padding: 10px 12px;" data-i18n-title="titleFlipLoupe">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h3m8-18h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"/>
+                    <line x1="12" y1="2" x2="12" y2="22"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="setting-item">
+              <label data-i18n="lbl_searchBtnPos">Расположение кнопки поиска:</label>
+              <select id="search-btn-position">
+                <option value="right" data-i18n="opt_btnPosRight">Справа строки (Классика)</option>
+                <option value="left" data-i18n="opt_btnPosLeft">Слева строки (как в браузере)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <h5 data-i18n="h_googleTools">Инструменты Google</h5>
+            <label class="checkbox-label">
+              <input type="checkbox" id="search-voice" checked />
+              <span data-i18n="search-voice">Голосовой поиск (Микрофон)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="search-image" checked />
+              <span data-i18n="search-image">Поиск по фото (Lens)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="search-ai" checked />
+              <span data-i18n="search-ai">Режим Google AI (udm=50)</span>
+            </label>
+            
+            <hr class="divider" />
+            <!-- Цвет подсветки ИИ режима и отключение glow -->
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_aiNeonColor">Цвет подсветки ИИ режима:</label>
+              <div class="custom-color-control" data-color-id="aiNeonColor">
+                <div class="color-swatch-preview" style="background:#ec4899;"></div>
+                <span class="color-hex-label">#ec4899</span>
+              </div>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="ai-glow-enable" checked />
+              <span data-i18n="lbl_aiGlow">Внешняя подсветка в режиме ИИ (Glow)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="search-glow-enable" checked />
+              <span data-i18n="lbl_searchGlow">Внешняя подсветка поиска (Glow)</span>
+            </label>
+          </div>
+
+          <div class="setting-group">
+            <h5 data-i18n="h_panelStyle">Стиль плашки</h5>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_bgColor">Цвет фона:</label>
+              <div class="custom-color-control" data-color-id="searchBg">
+                <div class="color-swatch-preview" style="background:#2b2a33;"></div>
+                <span class="color-hex-label">#2b2a33</span>
+              </div>
+            </div>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_textColor">Цвет текста:</label>
+              <div class="custom-color-control" data-color-id="searchText">
+                <div class="color-swatch-preview" style="background:#ffffff;"></div>
+                <span class="color-hex-label">#ffffff</span>
+              </div>
+            </div>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_btnAccent">Акцент кнопки:</label>
+              <div class="custom-color-control" data-color-id="accentColor">
+                <div class="color-swatch-preview" style="background:#4da6ff;"></div>
+                <span class="color-hex-label">#4da6ff</span>
+              </div>
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_opacity">Непрозрачность:</span> <span id="val-op-search">75</span>%</label>
+              <input type="range" id="op-search" min="0" max="100" value="75" />
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_innerBlur">Внутреннее размытие:</span> <span id="val-blur-search">12</span>px</label>
+              <input type="range" id="blur-search" min="0" max="40" value="12" />
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="search-3d" />
+              <span data-i18n="lbl_glass3d">True Glassmorphism (3D Стекло с рефракцией)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="search-neon" />
+              <span data-i18n="lbl_neonFx">Эффект Неона (Свечение)</span>
+            </label>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_customNeonColor">Собственный цвет Неона:</label>
+              <div class="custom-color-control" data-color-id="searchNeonColor">
+                <div class="color-swatch-preview" style="background:#00f3ff;"></div>
+                <span class="color-hex-label">#00f3ff</span>
+              </div>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="search-border" checked />
+              <span data-i18n="search-border">Видимые границы (Borders)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="search-shadows" checked />
+              <span data-i18n="search-shadows">Тень элемента</span>
+            </label>
+          </div>
+
+          <div class="setting-group">
+            <h5 data-i18n="h_typingEffect">Динамическая неоновая обводка при наборе</h5>
+            <p class="hint" data-i18n="hint_typingMaster">При наборе текста по периметру поиска переливается плавная неоновая обводка без заливки фона самого инпута.</p>
+            
+            <label class="checkbox-label">
+              <input type="checkbox" id="typing-effect-enable" checked />
+              <span data-i18n="typing-effect-enable">Включить эффект при наборе</span>
+            </label>
+
+            <div id="typing-effect-subsettings">
+              <div class="setting-item">
+                <label data-i18n="lbl_whenActive">Когда активен эффект:</label>
+                <select id="typing-effect-mode">
+                  <option value="typing" data-i18n="opt_onlyTyping">Только при вводе текста</option>
+                  <option value="always" data-i18n="opt_always">Всегда (постоянная анимированная обводка)</option>
+                </select>
+                <p class="hint" data-i18n="hint_alwaysMode">«Всегда» держит обводку включённой постоянно — удобно, если хотите оставить только эту неоновую анимацию вокруг поиска.</p>
+              </div>
+
+              <label class="checkbox-label" style="margin-top: 6px;">
+                <input type="checkbox" id="typing-fill-enable" />
+                <span data-i18n="lbl_typingFill">Заливка фона при наборе текста</span>
+              </label>
+              <p class="hint" data-i18n="hint_typingFill">Отключено по умолчанию. При выключении фон поиска остаётся чистым, анимируется только внешняя неоновая обводка.</p>
+
+              <label class="checkbox-label" style="margin-top: 6px;">
+                <input type="checkbox" id="typing-animate-enable" checked />
+                <span data-i18n="typing-animate-enable">Переливание цветов (анимация)</span>
+              </label>
+              <p class="hint" data-i18n="hint_typingAnimate">Если выключить, обводка станет статичным градиентом без перетекания цветов.</p>
+
+              <label class="checkbox-label" style="margin-top: 6px;">
+                <input type="checkbox" id="typing-neon-enable" checked />
+                <span data-i18n="typing-neon-enable">Свечение (неон) вокруг обводки</span>
+              </label>
+              <p class="hint" data-i18n="hint_typingNeon">Если выключить, пропадёт размытое свечение (glow) вокруг строки, обводка останется чёткой.</p>
+
+              <hr class="divider" />
+              <div class="setting-item flex-row">
+                <label data-i18n="lbl_gradColor1">Цвет градиента 1:</label>
+                <div class="custom-color-control" data-color-id="typingColor1">
+                  <div class="color-swatch-preview" style="background:#ff007f;"></div>
+                  <span class="color-hex-label">#ff007f</span>
+                </div>
+              </div>
+              <div class="setting-item flex-row">
+                <label data-i18n="lbl_gradColor2">Цвет градиента 2:</label>
+                <div class="custom-color-control" data-color-id="typingColor2">
+                  <div class="color-swatch-preview" style="background:#00f3ff;"></div>
+                  <span class="color-hex-label">#00f3ff</span>
+                </div>
+              </div>
+              <div class="setting-item flex-row">
+                <label data-i18n="lbl_gradColor3">Цвет градиента 3:</label>
+                <div class="custom-color-control" data-color-id="typingColor3">
+                  <div class="color-swatch-preview" style="background:#a855f7;"></div>
+                  <span class="color-hex-label">#a855f7</span>
+                </div>
+              </div>
+
+              <div class="setting-item" style="margin-top: 8px;">
+                <label><span data-i18n="lbl_animSpeed">Скорость переливания:</span> <span id="val-typing-anim-speed">3</span>s</label>
+                <input type="range" id="typing-anim-speed" min="1" max="10" step="0.5" value="3" />
+              </div>
+              <div class="setting-item">
+                <label><span data-i18n="lbl_borderWidth">Толщина обводки:</span> <span id="val-typing-border-width">2</span>px</label>
+                <input type="range" id="typing-border-width" min="1" max="6" step="1" value="2" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-shortcuts" class="tab-content">
+          <div class="setting-group">
+            <h5 data-i18n="h_layoutMode">Режим расположения</h5>
+            <div class="setting-item">
+              <select id="shortcut-mode-select">
+                <option value="grid" data-i18n="opt_gridMode">Сетка (Адаптивный центрированный блок)</option>
+                <option value="free" data-i18n="opt_freeMode">Свободный (Независимое перемещение)</option>
+              </select>
+            </div>
+            <div id="shortcut-width-block" class="setting-item">
+              <label><span data-i18n="lbl_gridWidth">Ширина блока сетки:</span> <span id="val-shortcut-width">850</span>px</label>
+              <input type="range" id="shortcut-width" min="100" max="1400" step="10" value="850" />
+              <p class="hint" data-i18n="hint_gridWidth">Уменьшите ширину (например, до 100px), чтобы выстроить ярлыки в вертикальный ряд.</p>
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_shortcutScale">Масштаб ярлыков:</span> <span id="val-size-shortcuts">1</span>x</label>
+              <input type="range" id="size-shortcuts" min="0.6" max="1.6" step="0.05" value="1" />
+            </div>
+          </div>
+
+
+          <div class="setting-group">
+            <h5 data-i18n="h_tileStyle">Стиль плиток</h5>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_tileBg">Фон плиток:</label>
+              <div class="custom-color-control" data-color-id="shortcutBg">
+                <div class="color-swatch-preview" style="background:#2b2a33;"></div>
+                <span class="color-hex-label">#2b2a33</span>
+              </div>
+            </div>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_labelColor">Цвет подписей:</label>
+              <div class="custom-color-control" data-color-id="shortcutText">
+                <div class="color-swatch-preview" style="background:#ffffff;"></div>
+                <span class="color-hex-label">#ffffff</span>
+              </div>
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_opacity">Непрозрачность:</span> <span id="val-op-shortcut">75</span>%</label>
+              <input type="range" id="op-shortcut" min="0" max="100" value="75" />
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_innerBlur">Внутреннее размытие:</span> <span id="val-blur-shortcut">12</span>px</label>
+              <input type="range" id="blur-shortcut" min="0" max="40" value="12" />
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="shortcut-3d" />
+              <span data-i18n="lbl_glass3d">True Glassmorphism (3D Стекло с рефракцией)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="shortcut-neon" />
+              <span data-i18n="lbl_neonFx">Эффект Неона (Свечение)</span>
+            </label>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_customNeonColor">Собственный цвет Неона:</label>
+              <div class="custom-color-control" data-color-id="shortcutNeonColor">
+                <div class="color-swatch-preview" style="background:#00f3ff;"></div>
+                <span class="color-hex-label">#00f3ff</span>
+              </div>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="shortcut-border" checked />
+              <span data-i18n="shortcut-border">Видимые границы (Borders)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="shortcut-shadows" checked />
+              <span data-i18n="shortcut-shadows">Тень карточек</span>
+            </label>
+          </div>
+
+
+          <div class="setting-group">
+            <h5 data-i18n="h_bookmarks">Управление закладками</h5>
+            <div class="add-shortcut-form">
+              <input type="text" id="new-shortcut-title" placeholder="Имя сайта" data-i18n-placeholder="ph_siteName" />
+              <input type="url" id="new-shortcut-url" placeholder="https://example.com" />
+              <button id="add-shortcut-btn" class="btn-primary" data-i18n="btnAddShortcut">Добавить ярлык</button>
+            </div>
+            <hr class="divider" />
+            <ul id="shortcuts-manage-list" class="manage-list"></ul>
+          </div>
+        </div>
+
+        <div id="tab-widgets" class="tab-content">
+          <div class="setting-group">
+            <h5 data-i18n="h_infoDisplay">Отображение информеров</h5>
+            <label class="checkbox-label">
+              <input type="checkbox" id="widget-greeting-enable" checked />
+              <span data-i18n="widget-greeting-enable">Приветствие (по времени суток)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="widget-weather-enable" />
+              <span data-i18n="widget-weather-enable">Информер Погоды</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="widget-ip-enable" />
+              <span data-i18n="widget-ip-enable">IP-адрес</span>
+            </label>
+            <label class="checkbox-label" style="margin-left: 24px;">
+              <input type="checkbox" id="widget-ip-flag" checked />
+              <span data-i18n="widget-ip-flag">Показывать флаг страны у IP</span>
+            </label>
+          </div>
+
+          <div class="setting-group">
+            <h5 data-i18n="h_styleColors">Стиль и Цвета</h5>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_widgetBg">Фон виджетов:</label>
+              <div class="custom-color-control" data-color-id="widgetBg">
+                <div class="color-swatch-preview" style="background:#202026;"></div>
+                <span class="color-hex-label">#202026</span>
+              </div>
+            </div>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_textColor">Цвет текста:</label>
+              <div class="custom-color-control" data-color-id="widgetText">
+                <div class="color-swatch-preview" style="background:#ffffff;"></div>
+                <span class="color-hex-label">#ffffff</span>
+              </div>
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_opacity">Непрозрачность:</span> <span id="val-op-widget">80</span>%</label>
+              <input type="range" id="op-widget" min="0" max="100" value="80" />
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_innerBlur">Внутреннее размытие:</span> <span id="val-blur-widget">12</span>px</label>
+              <input type="range" id="blur-widget" min="0" max="40" value="12" />
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="widget-3d" />
+              <span data-i18n="lbl_glass3d">True Glassmorphism (3D Стекло с рефракцией)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="widget-neon" />
+              <span data-i18n="lbl_neonFx">Эффект Неона (Свечение)</span>
+            </label>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_customNeonColor">Собственный цвет Неона:</label>
+              <div class="custom-color-control" data-color-id="widgetNeonColor">
+                <div class="color-swatch-preview" style="background:#00f3ff;"></div>
+                <span class="color-hex-label">#00f3ff</span>
+              </div>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="widget-border" checked />
+              <span data-i18n="widget-border">Видимые границы (Borders)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="widget-shadows" checked />
+              <span data-i18n="widget-shadows">Тень виджетов</span>
+            </label>
+          </div>
+
+          <div class="setting-group">
+            <h5 data-i18n="h_customWidgets">Собственные виджеты</h5>
+            <p class="hint" data-i18n="hint_customWidgets">Создавайте собственные виджеты с HTML, текстом, заметками или ссылками. Они поддерживают Конструктор и стиль темы.</p>
+            <button id="btn-create-custom-widget" class="btn-primary" data-i18n="btnCreateWidget">+ Создать свой виджет</button>
+            <div id="custom-widgets-list" style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;"></div>
+          </div>
+        </div>
+
+        <div id="tab-system" class="tab-content">
+          <details class="settings-category" open>
+            <summary data-i18n="summarySystemGeneral">Основное</summary>
+            <div class="settings-category-body">
+          <!-- Локализация интерфейса (Язык) -->
+          <div class="setting-group system-section" id="sys-general">
+            <h5 data-i18n="lbl_language">Язык интерфейса:</h5>
+            <div class="setting-item">
+              <label data-i18n="lbl_language">Язык интерфейса:</label>
+              <select id="locale-select">
+                <option value="auto" data-i18n="opt_langAuto">Авто (по языку браузера)</option>
+                <option value="ru" data-i18n="opt_langRu">Русский</option>
+                <option value="en" data-i18n="opt_langEn">English</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label data-i18n="lbl_interfaceTheme">Тема интерфейса:</label>
+              <select id="interface-theme-select">
+                <option value="auto" data-i18n="opt_themeAuto">Авто (синхронизация с Firefox)</option>
+                <option value="dark" data-i18n="opt_themeDark">Тёмная</option>
+                <option value="light" data-i18n="opt_themeLight">Светлая</option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="setting-group system-section" id="sys-performance">
+            <h5 data-i18n="lbl_ultraOpt">Режим ультраоптимизации (для слабых ПК)</h5>
+            <label class="checkbox-label">
+              <input type="checkbox" id="ultra-opt-enable" />
+              <span data-i18n="lbl_ultraOpt">Режим ультраоптимизации (для слабых ПК)</span>
+            </label>
+            <p class="hint" data-i18n="hint_ultraOpt">Отключает тяжелые размытия (blur), постоянные анимации и тени для максимальной производительности на слабых ПК.</p>
+          </div>
+
+            </div>
+          </details>
+
+          <details class="settings-category">
+            <summary data-i18n="summarySystemEffects">Внешний вид и эффекты</summary>
+            <div class="settings-category-body">
+
+          <div class="setting-group">
+            <h5 data-i18n="h_effects">Эффекты</h5>
+            <div class="setting-item">
+              <label data-i18n="lbl_neonMode">Режим неона (глобально для всех элементов):</label>
+              <select id="neon-style-select">
+                <option value="glow" data-i18n="opt_neonGlow">Заливка (мягкое свечение)</option>
+                <option value="outline" data-i18n="opt_neonOutline">Обводка (чёткий контур, без размытия)</option>
+              </select>
+              <p class="hint" data-i18n="hint_neonMode">Влияет на неон часов, поиска, ярлыков и виджетов, а также на подсветку при наборе текста.</p>
+            </div>
+          </div>
+
+
+          <div class="setting-group">
+            <h5 data-i18n="h_glass">Настройка стекла (True Glassmorphism)</h5>
+            <p class="hint" data-i18n="hint_glass">Оптические параметры для элементов с включённым «True Glassmorphism» (фаска, рефракция, контраст, насыщенность).</p>
+            <div class="setting-item flex-row">
+              <label data-i18n="lbl_glassTint">Цвет тонировки/блика:</label>
+              <div class="custom-color-control" data-color-id="glassTintColor">
+                <div class="color-swatch-preview" style="background:#ffffff;"></div>
+                <span class="color-hex-label">#ffffff</span>
+              </div>
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_glassTintIntensity">Интенсивность тонировки:</span> <span id="val-glass-tint-opacity">24</span>%</label>
+              <input type="range" id="glass-tint-opacity" min="0" max="60" value="24" />
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_glassBorderOpacity">Яркость блика/окантовки:</span> <span id="val-glass-border-opacity">75</span>%</label>
+              <input type="range" id="glass-border-opacity" min="10" max="100" value="75" />
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_saturate">Насыщенность:</span> <span id="val-glass-saturate">190</span>%</label>
+              <input type="range" id="glass-saturate" min="100" max="300" value="190" />
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_glassBrightness">Яркость стекла:</span> <span id="val-glass-brightness">110</span>%</label>
+              <input type="range" id="glass-brightness" min="90" max="150" value="110" />
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_contrast">Контраст:</span> <span id="val-glass-contrast">106</span>%</label>
+              <input type="range" id="glass-contrast" min="90" max="140" value="106" />
+            </div>
+          </div>
+
+            </div>
+          </details>
+
+          <details class="settings-category">
+            <summary data-i18n="summarySystemTools">Инструменты</summary>
+            <div class="settings-category-body">
+          <div class="setting-group system-section" id="sys-tools">
+            <h5 data-i18n="h_builderMode">Режим Конструктора</h5>
+            <p class="hint" data-i18n="hint_builderMode">Позволяет перемещать, поворачивать и масштабировать каждый виджет индивидуально.</p>
+            <label class="checkbox-label">
+              <input type="checkbox" id="build-mode-enable" />
+              <span data-i18n="build-mode-enable">Включить Конструктор</span>
+            </label>
+            <div class="setting-item" style="margin-top: 8px;">
+              <label data-i18n="lbl_gridSnap">Магнитная сетка привязки:</label>
+              <select id="build-grid-size">
+                <option value="0" data-i18n="opt_grid0">Выкл. (без привязки)</option>
+                <option value="1" data-i18n="opt_grid1">1% (Очень точная)</option>
+                <option value="2" data-i18n="opt_grid2">2% (Плавный шаг)</option>
+                <option value="3" data-i18n="opt_grid3">3% (Мелкая сетка)</option>
+                <option value="5" selected data-i18n="opt_grid5">5% (Рекомендуемый)</option>
+                <option value="10" data-i18n="opt_grid10">10% (Крупная сетка)</option>
+                <option value="20" data-i18n="opt_grid20">20% (Крупный шаг)</option>
+              </select>
+            </div>
+            <hr class="divider" />
+            <button id="reset-pos-clock" class="btn-secondary" style="font-size: 0.8rem;" data-i18n="btnResetClockPos">Сбросить позицию часов</button>
+            <button id="reset-pos-search" class="btn-secondary" style="font-size: 0.8rem;" data-i18n="btnResetSearchPos">Сбросить позицию поиска</button>
+            <button id="reset-pos-shortcuts" class="btn-secondary" style="font-size: 0.8rem;" data-i18n="btnResetShortcutsPos">Сбросить позиции ярлыков</button>
+            <button id="reset-pos-widgets" class="btn-secondary" style="font-size: 0.8rem;" data-i18n="btnResetWidgetsPos">Сбросить позиции виджетов</button>
+            <button id="reset-positions-btn" class="btn-danger" style="font-size: 0.8rem;" data-i18n="btnResetAllPos">Сбросить позиции ВСЕХ элементов на центр</button>
+          </div>
+
+
+          <div class="setting-group">
+            <h5 data-i18n="h_hotkeys">Горячие клавиши</h5>
+            <div class="hotkeys-grid">
+              <div class="hotkey-row">
+                <span data-i18n="hk_search">Фокус в строку поиска</span>
+                <div><kbd>Ctrl+K</kbd> / <kbd>/</kbd></div>
+              </div>
+              <div class="hotkey-row">
+                <span data-i18n="hk_esc">Снять фокус / Закрыть окна</span>
+                <div><kbd>Esc</kbd></div>
+              </div>
+              <div class="hotkey-row">
+                <span data-i18n="hk_settings">Меню настроек</span>
+                <div><kbd>Alt+S</kbd> / <kbd>Ctrl+,</kbd></div>
+              </div>
+              <div class="hotkey-row">
+                <span data-i18n="hk_builder">Режим Конструктора</span>
+                <div><kbd>Alt+B</kbd></div>
+              </div>
+              <div class="hotkey-row">
+                <span data-i18n="hk_ai">Режим Google AI (udm=50)</span>
+                <div><kbd>Alt+A</kbd></div>
+              </div>
+              <div class="hotkey-row">
+                <span data-i18n="hk_theme">Следующая тема</span>
+                <div><kbd>Alt+T</kbd></div>
+              </div>
+              <div class="hotkey-row">
+                <span data-i18n="hk_ultra">Ультраоптимизация</span>
+                <div><kbd>Alt+O</kbd></div>
+              </div>
+              <div class="hotkey-row">
+                <span data-i18n="hk_digits">Открыть ярлык 1-9</span>
+                <div><kbd>1</kbd> .. <kbd>9</kbd></div>
+              </div>
+            </div>
+          </div>
+
+            </div>
+          </details>
+
+          <details class="settings-category">
+            <summary data-i18n="summarySystemInterface">Интерфейс</summary>
+            <div class="settings-category-body">
+          <!-- Настройки меню -->
+          <div class="setting-group">
+            <h5 data-i18n="h_panelInterface">Интерфейс панели</h5>
+            <div class="setting-item">
+              <label data-i18n="lbl_menuPos">Расположение меню настроек:</label>
+              <select id="sidebar-position">
+                <option value="right" data-i18n="opt_right">Справа экрана</option>
+                <option value="left" data-i18n="opt_left">Слева экрана</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label class="checkbox-label">
+                <input type="checkbox" id="settings-button-enable" checked />
+                <span data-i18n="lbl_showSettingsButton">Показывать шестерёнку настроек</span>
+              </label>
+              <p class="hint" data-i18n="hint_showSettingsButton">Если выключить, шестерёнка исчезнет, но настройки всё равно можно открыть горячей клавишей.</p>
+            </div>
+            <div class="setting-item">
+              <label><span data-i18n="lbl_gearOpacity">Непрозрачность шестерёнки:</span> <span id="val-settings-opacity">60</span>%</label>
+              <input type="range" id="settings-opacity" min="0" max="100" value="60" />
+            </div>
+          </div>
+
+            </div>
+          </details>
+
+          <details class="settings-category">
+            <summary data-i18n="summarySystemCustomization">Кастомизация</summary>
+            <div class="settings-category-body">
+          <!-- Пользовательский CSS (Custom CSS) -->
+          <div class="setting-group system-section" id="sys-customization">
+            <h5 data-i18n="h_customCss">Пользовательский CSS</h5>
+            <p class="hint" data-i18n="hint_customCss">Добавьте собственный CSS-код для полной кастомизации любых элементов вкладки.</p>
+            <div class="setting-item">
+              <textarea id="custom-css-editor" class="custom-css-textarea" data-i18n-placeholder="cssEditorPlaceholder" placeholder="/* Напишите ваш CSS здесь... */&#10;#clock { letter-spacing: 2px; }&#10;.custom-widget { border-radius: 16px; }"></textarea>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button id="btn-apply-css" class="btn-primary" style="flex: 1;" data-i18n="btnApplyCss">Применить CSS</button>
+              <button id="btn-clear-css" class="btn-secondary" data-i18n="btnResetCss">Очистить</button>
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;">
+              <button type="button" class="btn-secondary css-snippet-btn" data-snippet="/* Скрыть строку поиска */&#10;#widget-search { display: none !important; }" data-snippet-en="/* Hide search bar */&#10;#widget-search { display: none !important; }" style="font-size: 0.72rem; padding: 4px 8px;" data-i18n="cssSnippetHideSearch">Скрыть поиск</button>
+              <button type="button" class="btn-secondary css-snippet-btn" data-snippet="/* Круглые ярлыки */&#10;.shortcut-card { border-radius: 50% !important; }" data-snippet-en="/* Round shortcuts */&#10;.shortcut-card { border-radius: 50% !important; }" style="font-size: 0.72rem; padding: 4px 8px;" data-i18n="cssSnippetRoundShortcuts">Круглые ярлыки</button>
+              <button type="button" class="btn-secondary css-snippet-btn" data-snippet="/* Светящийся текст часов */&#10;#clock { text-shadow: 0 0 20px var(--accent-color); }" data-snippet-en="/* Glowing clock text */&#10;#clock { text-shadow: 0 0 20px var(--accent-color); }" style="font-size: 0.72rem; padding: 4px 8px;" data-i18n="cssSnippetNeonClock">Неон часов</button>
+            </div>
+          </div>
+
+            </div>
+          </details>
+
+          <details class="settings-category">
+            <summary data-i18n="summarySystemData">Данные и сброс</summary>
+            <div class="settings-category-body">
+          <!-- Бэкапы и данные -->
+          <div class="setting-group system-section" id="sys-data">
+            <h5 data-i18n="h_backups">Бэкапы и Данные</h5>
+            <button id="export-config-btn" class="btn-secondary" data-i18n="btnExport">Экспорт профиля (Все настройки + Видео)</button>
+            <label class="btn-secondary file-button">
+              <span data-i18n="btnImport">Импорт профиля</span>
+              <input type="file" id="import-config-input" accept=".json" style="display:none;" />
+            </label>
+            <hr class="divider" />
+            <button id="reset-all-btn" class="btn-danger" data-i18n="btnFactoryReset">Полный сброс до заводских настроек</button>
+          </div>
+            </div>
+          </details>
+
+          <p class="yft-donation-note" data-i18n="donationNote">Мне грустно, что пока я не могу получать донаты. Но YFT всё равно развивается ♡</p>
+
+        </div>
+
+    <div id="custom-picker-popover" class="color-picker-popover hidden">
+      <div class="picker-header">
+        <span data-i18n="pickerTitle">Настройка цвета</span>
+        <button id="close-picker" class="btn-close" style="width:20px;height:20px;">&times;</button>
+      </div>
+      <div class="setting-item" style="gap:6px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div id="picker-current-preview" style="width:32px; height:32px; border-radius:8px; border:2px solid #fff; flex-shrink:0;"></div>
+          <input type="text" id="picker-hex-input" style="font-family:monospace; text-transform:uppercase; font-size:0.9rem; padding:6px 10px;" />
+          <button id="picker-pipette-btn" class="btn-secondary" title="Пипетка экрана" data-i18n-title="titlePipette" style="padding:6px 10px; flex-shrink:0;">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m14 7 3 3-9 9H5v-3l9-9Z"/><path d="m16 5 2 2"/><path d="M19 8l-2-2"/></svg>
+          </button>
+        </div>
+        <label style="font-size:0.75rem; margin-top:4px;" data-i18n="lbl_hue">Оттенок (Спектр):</label>
+        <input type="range" id="picker-hue" class="hue-slider" min="0" max="360" value="0" />
+        <label style="font-size:0.75rem; margin-top:2px;" data-i18n="lbl_lightness">Яркость (Тёмный/Светлый):</label>
+        <input type="range" id="picker-lightness" class="lightness-slider" min="0" max="100" value="50" />
+      </div>
+      <div class="picker-palette-grid" style="margin-top:10px;">
+        <div class="swatch-quick" style="background:#ffffff;" data-hex="#ffffff"></div>
+        <div class="swatch-quick" style="background:#a1a1aa;" data-hex="#a1a1aa"></div>
+        <div class="swatch-quick" style="background:#2b2a33;" data-hex="#2b2a33"></div>
+        <div class="swatch-quick" style="background:#0c0d14;" data-hex="#0c0d14"></div>
+        <div class="swatch-quick" style="background:#4da6ff;" data-hex="#4da6ff"></div>
+        <div class="swatch-quick" style="background:#00f3ff;" data-hex="#00f3ff"></div>
+        <div class="swatch-quick" style="background:#ff007f;" data-hex="#ff007f"></div>
+        <div class="swatch-quick" style="background:#a855f7;" data-hex="#a855f7"></div>
+      </div>
+    </div>
+
+    <div id="eyedropper-loupe" class="eyedropper-loupe hidden">
+      <div id="eyedropper-loupe-color" class="eyedropper-loupe-color"></div>
+      <span id="eyedropper-loupe-text">#ffffff</span>
+    </div>
+    <div id="eyedropper-hint" class="eyedropper-hint-badge hidden">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m14 7 3 3-9 9H5v-3l9-9Z"/><path d="m16 5 2 2"/></svg>
+      <span>Кликните по фону или интерфейсу для взятия цвета. Esc — отмена.</span>
+    </div>
+
+    <div id="custom-widget-modal" class="modal-backdrop hidden">
+      <div class="modal-box" style="max-width: 520px;">
+        <div class="modal-box-header">
+          <h3 id="custom-widget-modal-title" data-i18n="modalTitleNewWidget">Создание виджета</h3>
+          <button id="close-widget-modal" class="btn-icon-close">&times;</button>
+        </div>
+        <div class="modal-box-body" style="display: flex; flex-direction: column; gap: 12px;">
+          <input type="hidden" id="custom-widget-edit-id" value="" />
+          <div class="setting-item">
+            <label data-i18n="lbl_widgetTitle">Название виджета:</label>
+            <input type="text" id="custom-widget-title-input" placeholder="Например: Заметки" />
+          </div>
+          <div class="setting-item">
+            <label data-i18n="lbl_widgetTemplates">Готовые шаблоны:</label>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button type="button" class="btn-secondary widget-template-btn" data-tpl="notes" style="font-size: 0.75rem; padding: 5px 10px;">Заметки</button>
+              <button type="button" class="btn-secondary widget-template-btn" data-tpl="quote" style="font-size: 0.75rem; padding: 5px 10px;">Цитата</button>
+              <button type="button" class="btn-secondary widget-template-btn" data-tpl="links" style="font-size: 0.75rem; padding: 5px 10px;">Ссылки</button>
+              <button type="button" class="btn-secondary widget-template-btn" data-tpl="progress" style="font-size: 0.75rem; padding: 5px 10px;">Прогресс</button>
+            </div>
+          </div>
+          <div class="setting-item">
+            <label data-i18n="lbl_widgetContent">HTML / Текст виджета:</label>
+            <textarea id="custom-widget-content-input" class="custom-css-textarea" style="min-height: 120px;" placeholder="<div>Ваш HTML или текст...</div>"></textarea>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px;">
+            <button type="button" id="btn-cancel-custom-widget" class="btn-secondary" style="padding: 8px 16px;">Отмена</button>
+            <button type="button" id="btn-save-custom-widget" class="btn-primary" style="padding: 8px 18px;" data-i18n="btnSaveWidget">Сохранить виджет</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="lens-modal" class="modal-backdrop hidden">
+      <div class="modal-box">
+        <div class="modal-box-header">
+          <h3 data-i18n="titleImageSearch">Поиск по фото (Google Lens)</h3>
+          <button id="close-lens-modal" class="btn-icon-close">&times;</button>
+        </div>
+        <div class="modal-box-body">
+          <div class="setting-item">
+            <label data-i18n="lensUrlLabel">Ссылка на изображение (URL):</label>
+            <input type="url" id="lens-url-input" placeholder="https://example.com/image.jpg" />
+            <button id="lens-url-submit" class="btn-primary" style="margin-top:6px;" data-i18n="btnSearch">Найти</button>
+          </div>
+          <hr class="divider" style="margin: 16px 0;" />
+          <div class="setting-item">
+            <label data-i18n="lensFileLabel">Поиск по файлу с диска:</label>
+            <p class="hint" data-i18n="lensFileHint">Google блокирует автоматическую загрузку файлов из сторонних расширений. Откройте Google Lens и перетащите фото на страницу.</p>
+            <button id="lens-open-official" class="btn-secondary" style="margin-top:8px;" data-i18n="btnOpenLens">Открыть Google Lens</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>
