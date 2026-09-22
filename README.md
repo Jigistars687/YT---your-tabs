@@ -35,7 +35,7 @@
 - **Backup:** Complete import and export of scene settings via a JSON file.
 
 ## Installation
-- **Firefox AMO (Recommended):** [Get it on Mozilla Add-ons](https://addons.mozilla.org/firefox/addon/yourtabs/)
+- **Firefox AMO (Recommended):** [Get it on Mozilla Add-ons](https://addons.mozilla.org/ru/firefox/addon/yt-your-tabs/)
 - **Manual Installation:** 
   1. Download the source code.
   2. Open `about:debugging#/runtime/this-firefox` in Firefox.
@@ -85,7 +85,7 @@
 - **Бэкап:** полный экспорт и импорт конфигурации через JSON-файл.
 
 ## Установка
-- **Firefox AMO (Рекомендуется):** [Установить из Mozilla Add-ons](https://addons.mozilla.org/firefox/addon/yourtabs/)
+- **Firefox AMO (Рекомендуется):** [Установить из Mozilla Add-ons](https://addons.mozilla.org/ru/firefox/addon/yt-your-tabs/)
 - **Ручная установка:** 
   1. Скачайте исходный код.
   2. Откройте `about:debugging#/runtime/this-firefox` в Firefox.
